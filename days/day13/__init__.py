@@ -1,8 +1,11 @@
 
 from template import Day
 from time import time
-from functools import cmp_to_key
+from functools import cmp_to_key, reduce
+from operator import iconcat
+from itertools import chain
 from math import prod
+import json
 
 class Solution(Day):
   pairs = [[]]
@@ -13,6 +16,7 @@ class Solution(Day):
   @staticmethod
   def compare_lists(a, b):
     count = 0
+    
     for i in range(len(a)):
       if i >= len(b):
         return -1
@@ -47,8 +51,8 @@ class Solution(Day):
 
   def prep_data(self, data):
     for line in data:
-      if line.strip() != "":
-        self.pairs[-1].append(eval(line.strip()))
+      if line != "\n":
+        self.pairs[-1].append(json.loads(line.strip()))
       else:
         self.pairs.append([])
 
@@ -66,12 +70,7 @@ class Solution(Day):
     start = time()
 
     dividers = [[2], [6]]
-    ordered = dividers + []
-    for i, pair in enumerate(self.pairs):
-      if self.compare_pairs(pair[0], pair[1]) > 0:
-        ordered+= pair
-      else:
-        ordered += list(reversed(pair))
+    ordered = dividers + list(chain(*self.pairs))
 
     ordered = sorted(ordered, key = cmp_to_key(self.compare_pairs), reverse=True)
 
