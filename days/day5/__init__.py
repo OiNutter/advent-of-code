@@ -71,8 +71,11 @@ class Solution(Day):
     stacks = self.build_crates(crates)
     return (stacks, moves)
 
-  def task_1(self, data):
-    (stacks, moves) = self.get_crates(data)
+  def prep_data(self, data):
+    self.data = data
+
+  def task_1(self):
+    (stacks, moves) = self.get_crates(self.data)
     stacks = self.move_crates(stacks, moves, lambda new, old: list(reversed(new)) + old)
 
     # Find top cra tes
@@ -82,8 +85,8 @@ class Solution(Day):
 
     print("The answer to task 1 is: ", ''.join(tops))
   
-  def task_2(self, data):
-    (stacks, moves) = self.get_crates(data)
+  def task_2(self):
+    (stacks, moves) = self.get_crates(self.data)
     stacks = self.move_crates(stacks, moves, lambda new, old: new + old)
     
     # Find top cra tes
