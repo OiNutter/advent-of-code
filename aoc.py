@@ -1,6 +1,7 @@
 import argparse
 import os
 import sys
+import cProfile
 
 dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(dir)
@@ -13,8 +14,12 @@ parser = argparse.ArgumentParser(
 )
 
 parser.add_argument("day")
+parser.add_argument("--profile", default=False, action="store_true", required=False)
 
 args = parser.parse_args()
 
 Solution = getattr(days, "day%s" % args.day).Solution
-Solution().run()
+if args.profile:
+  cProfile.run('Solution().run()')
+else:
+  Solution().run()
