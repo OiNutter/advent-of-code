@@ -32,9 +32,13 @@ class Solution(Day):
   def prep_data(self, data):
     self.data = data
 
+  @staticmethod
+  def get_key(x,y):
+    return "%s,%s" % (x,y)
+
   def build_cave(self):
     self.cave = {}
-    self.sand = [500,0]
+    self.sand = (500,0)
     self.min_x = None
     self.min_y = None
     self.max_x = None
@@ -42,7 +46,7 @@ class Solution(Day):
     self.can_fall = True
 
     for line in self.data:
-      coords = [json.loads("[%s]" % x) for x in line.strip().split(" -> ")]
+      coords = [[int(n) for n in x.split(",")] for x in line.strip().split(" -> ")]
       for i in range(1, len(coords)):
         start = coords[i-1]
         end = coords[i]
@@ -159,7 +163,7 @@ class Solution(Day):
       
       if cycles > 0:
         count += 1
-        self.sand = [500,0]
+        self.sand = (500,0)
         self.cave[500][0] = SAND
         cycles = 0
       else:
@@ -172,8 +176,8 @@ class Solution(Day):
     start = time()
     self.build_cave()
     self.max_y += 2
-    for x in range(self.min_x, self.max_x+1):
-      self.cave[x][self.max_y] = ROCK
+    #for x in range(self.min_x, self.max_x+1):
+    #  self.cave[x][self.max_y] = ROCK
 
     #self.draw_cave()
     count = 0
@@ -186,13 +190,13 @@ class Solution(Day):
       while falling:
         falling = self.move_sand(floor = self.max_y, limit_x=False)
         cycles += 1
-        if self.sand == [500, 0]:
+        if self.sand == (500, 0):
           self.can_fall = False
 
       #self.draw_cave()
       if cycles > 0:
         count += 1
-        self.sand = [500,0]
+        self.sand = (500,0)
         self.cave[500][0] = SAND
         cycles = 0
       else:
